@@ -1,0 +1,5 @@
+imaplib
+email
+requests
+os
+dotenv
