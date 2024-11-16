@@ -1,0 +1,12 @@
+services:
+  mailtidy:
+    build:
+      context: .
+      dockerfile: ./Docker/Dockerfile
+    stdin_open: true
+    tty: true
+    environment:
+      - EMAIL_ADDRESS
+      - EMAIL_PASSWORD
+      - LLAMA_HOST
+    network_mode: "host"

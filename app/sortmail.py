@@ -2,16 +2,14 @@ import imaplib
 import email
 from email.header import decode_header
 import requests
-import json
 import os
-from dotenv import load_dotenv
 
-# Load environment variables from .env file if it exists
-load_dotenv()
-
-# Your email credentials from environment variables
-username = os.getenv("EMAIL_ADDRESS")
-password = os.getenv("EMAIL_PASSWORD")
+# Email credentials from environment variables
+username = os.environ.get("EMAIL_ADDRESS")
+password = os.environ.get("EMAIL_PASSWORD")
+llama_host = os.environ.get("LLAMA_HOST", "localhost")
+llama_port = os.environ.get("LLAMA_PORT", "11434")
+llama_url = f"http://{llama_host}:{llama_port}/api/generate"
 
 if not username or not password:
     raise ValueError("Email address and password must be set in environment variables.")
@@ -23,8 +21,8 @@ def move_email_to_folder(mail, email_id, folder_name):
     mail.expunge()
 
 # Function to classify the email via LLM API
-def classify_email_via_llm(subject, body):
-    url = "http://localhost:11434/api/generate"
+def classify_email_via_llm(subject, body, llama_url):
+    #url = "http://localhost:11434/api/generate"
     
     # Construct the prompt
     prompt_template = """
@@ -54,6 +52,9 @@ def classify_email_via_llm(subject, body):
     Subject: "Invoice for your recent purchase"
     Body: "Please find attached the invoice for your recent purchase."
 
+    Example of important:
+    Subject: "Security alert"
+
     Example of regular:
     Subject: "Team meeting rescheduled"
     Body: "The team meeting has been rescheduled to next Monday."
@@ -79,7 +80,7 @@ def classify_email_via_llm(subject, body):
     }
     
     try:
-        response = requests.post(url, json=payload)
+        response = requests.post(llama_url, json=payload)
         response.raise_for_status()
         
         # Parse the JSON response
@@ -151,17 +152,17 @@ for email_id in email_ids:
                     email_body = email_body.decode('ISO-8859-1')
             
             # Classify the email using LLM
-            label = classify_email_via_llm(subject, email_body)
+            label = classify_email_via_llm(subject, email_body, llama_url)
             
             # Move the email based on the LLM's classification
             if label == "spam":
                 move_email_to_folder(mail, email_id, "s")
-                print(f"Moved to 's': {subject}")
+                print(f"Moved to 's': {subject}", flush=True)
             elif label == "important":
                 move_email_to_folder(mail, email_id, "i")
-                print(f"Moved to 'i': {subject}")
+                print(f"Moved to 'i': {subject}", flush=True)
             else:
-                print(f"Kept in inbox: {subject}")
+                print(f"Kept in inbox: {subject}", flush=True)
 
 
 # Logout from the server

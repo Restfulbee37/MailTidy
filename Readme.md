@@ -19,6 +19,38 @@ MailTidy is an advanced email sorting tool powered by **Llama 3**, designed to s
 - Automatically identify and filter out spam emails.
 - Organize emails for later review at your convenience.
 
+### Supported Platforms
+
+- Gmail
+- Everything else is untested
+
 ## Getting Started:
 
-TODO Docker
+**To run this program you must have an instance of Llama with a contactable API running on your machine with something such as Ollama.**
+
+Running this:
+
+For Gmail you must generate an App Password for this to work. This is your email password in .env!
+
+You need to set your credentials and API details located in the **.env** file. See example below:
+
+```bash
+EMAIL_ADDRESS=example@example.com
+EMAIL_PASSWORD=gmail app password here
+LLAMA_HOST=192.168.0.2
+LLAMA_PORT=11434
+```
+
+The compose file should be automatically configured to handle this once enviornment file is set
+
+Run:
+
+```docker
+docker compose up
+```
+
+or detached
+
+```docker
+docker compose up -d
+```
