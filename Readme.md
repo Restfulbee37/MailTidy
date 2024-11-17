@@ -26,7 +26,7 @@ MailTidy is an advanced email sorting tool powered by **Llama 3**, designed to s
 
 ## Getting Started:
 
-**To run this program you must have an instance of Llama with a contactable API running on your machine with something such as Ollama.**
+**To run this program you must have an instance of Llama with a contactable API running on your machine with something such as Ollama. For more information on this visit: https://ollama.com/ or https://openwebui.com/ **
 
 Running this:
 
