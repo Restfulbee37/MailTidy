@@ -41,6 +41,8 @@ LLAMA_HOST=192.168.0.2
 LLAMA_PORT=11434
 ```
 
+You must create a label on your gmail account called i and s for important and spam. (This will be changed soon)
+
 The compose file should be automatically configured to handle this once enviornment file is set
 
 Run:
